@@ -17,24 +17,21 @@ export default function Login() {
   const [error, setError] = useState('');
   const { isDark, toggle } = useTheme();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(''); 
 
-if (isRegister) {
-        // ADDED /api HERE
-        await api.post('/api/auth/register', { username, password, role });
+    try {
+      if (isRegister) {
+        await api.post('/auth/register', { username, password, role });
         setIsRegister(false); 
         alert('Account created! Please sign in.');
       } else {
-        // ADDED /api HERE
-        const response = await api.post('/api/auth/login', { username, password });
+        const response = await api.post('/auth/login', { username, password });
         
-        // CRITICAL FIX: Save as exactly 'token' so api.ts can find it
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('role', response.data.role || role);
         
-        // BULLETPROOF REDIRECT: Forces browser to load the dashboard!
         window.location.href = '/';
       }
     } catch (err: any) {
