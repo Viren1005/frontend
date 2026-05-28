@@ -21,13 +21,14 @@ export default function Login() {
     e.preventDefault();
     setError(''); 
 
-    try {
-      if (isRegister) {
-        await api.post('/auth/register', { username, password, role });
+if (isRegister) {
+        // ADDED /api HERE
+        await api.post('/api/auth/register', { username, password, role });
         setIsRegister(false); 
         alert('Account created! Please sign in.');
       } else {
-        const response = await api.post('/auth/login', { username, password });
+        // ADDED /api HERE
+        const response = await api.post('/api/auth/login', { username, password });
         
         // CRITICAL FIX: Save as exactly 'token' so api.ts can find it
         localStorage.setItem('token', response.data.token);
